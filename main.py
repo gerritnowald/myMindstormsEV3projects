@@ -15,7 +15,10 @@ left_motor  = Motor(Port.B)
 right_motor = Motor(Port.C)
 
 # Initialize the drive base.
-robot = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=118)
+robot = DriveBase(left_motor, right_motor, wheel_diameter=62.4, axle_track=110)
+
+
+# robot.turn(360)
 
 
 robot.straight(1000)
