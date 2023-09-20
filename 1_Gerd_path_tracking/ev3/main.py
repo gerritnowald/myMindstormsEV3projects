@@ -10,11 +10,6 @@ from pybricks.robotics import DriveBase
 import random
 
 #------------------------------------------------------------------------------
-# user input
-
-speed = 100   # mm/s 
-
-#------------------------------------------------------------------------------
 # initialization
 
 ev3 = EV3Brick()
@@ -25,25 +20,23 @@ right_motor = Motor(Port.C)
 obstacle_sensor = InfraredSensor(Port.S4)
 bumper          = TouchSensor(Port.S3)
 
-robot = DriveBase(left_motor, right_motor, wheel_diameter = 62.4, axle_track = 110)
-robot.settings(speed, straight_acceleration = 100, turn_rate = 100, turn_acceleration = 100)
+robot = DriveBase(left_motor, right_motor, wheel_diameter = 62.4, axle_track = 110)     # mm
+robot.settings(straight_speed = 100, straight_acceleration = 100, turn_rate = 100, turn_acceleration = 100)
 
-data  = DataLog('time / s', 'distance / mm', 'clockwise rotation / °', name='position', timestamp=False)
+data  = DataLog('time / s', 'distance / mm', 'angle / °', name='path', timestamp=False)
 watch = StopWatch()
 
 #------------------------------------------------------------------------------
 # main loop
 
 while True:
-    robot.drive(speed, 0)
+    robot.drive(speed = 100, turn_rate = 0)     # mm/s, deg/s
 
-    while obstacle_sensor.distance() > 20 and bumper.pressed() is not True:
+    while obstacle_sensor.distance() > 20 and bumper.pressed() is False:
         wait(100)    # ms
     
     robot.straight(-50)     # mm
-    data.log(watch.time()/1000, robot.distance(), 0)
+
+    data.log(watch.time()/1000, robot.distance(), robot.angle())    # old angle
 
     robot.turn(random.randint(30,180))  # °
-    data.log(watch.time()/1000, 0, robot.angle())
-
-    robot.reset()   # resets measurement
