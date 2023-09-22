@@ -11,13 +11,24 @@ import random
 
 obstacle_sensor = InfraredSensor(Port.S4)
 bumper          = TouchSensor(Port.S3)
+gyro_sensor     = GyroSensor(Port.S2)
+gyro_sensor.reset_angle(0)
 
 robot = DriveBase(left_motor = Motor(Port.B), right_motor = Motor(Port.C), wheel_diameter = 62.4, axle_track = 110)     # mm
 robot.settings(straight_speed = 100, straight_acceleration = 100, turn_rate = 100, turn_acceleration = 100)
 
-data  = DataLog('time / s', 'distance / mm', 'angle / °', name='path', timestamp=False)
-data.log(0, 0, 0)
+data  = DataLog('time / s', 'distance / mm', 'angle motors / °', 'angle gyro / °', name='path', timestamp=False)
+data.log(0, 0, 0, 0)
 watch = StopWatch()
+
+#------------------------------------------------------------------------------
+# calibration
+
+robot.turn(360)  # °
+factor = gyro_sensor.angle() / 360
+
+robot.reset()
+gyro_sensor.reset_angle(0)
 
 #------------------------------------------------------------------------------
 # main loop
@@ -29,13 +40,12 @@ while True:
 
     while obstacle_sensor.distance() > 20 and bumper.pressed() is False:
         wait(100)    # ms
-    
-    data.log(watch.time()/1000, robot.distance()/1000, angle)
 
     robot.straight(-50)     # mm
-    data.log(watch.time()/1000, -50/1000, angle)
+    
+    data.log(watch.time()/1000, robot.distance()/1000, angle, gyro_sensor.angle()/factor)
 
-    robot.turn(random.randint(30,180))  # °
+    robot.turn( random.randint(30,180) * random.choice([1,-1]) )  # °
     angle += robot.angle()
 
     robot.reset()
