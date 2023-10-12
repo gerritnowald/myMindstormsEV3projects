@@ -17,18 +17,18 @@ obstacle_sensor = InfraredSensor(Port.S4)
 robot = DriveBase(left_motor = Motor(Port.B), right_motor = Motor(Port.C), wheel_diameter = 62.4, axle_track = 109.605 )     # mm
 robot.settings(straight_speed = 100, straight_acceleration = 100, turn_rate = 100, turn_acceleration = 100)
 
-data  = DataLog('time / s', 'distance / mm', 'angle motors / °', 'angle gyro / °', name='path', timestamp=False)
+data  = DataLog('time / s', 'distance / m', 'angle motors / °', 'angle gyro / °', name='path', timestamp=False)
 watch = StopWatch()
 
 #------------------------------------------------------------------------------
 # calibration
 
-# data  = DataLog('time / s', 'distance driven motor / mm', 'distance ultrasonic / mm', 'distance infrared / mm', name='calibration', timestamp=False)
+# data  = DataLog('time / s', 'distance driven motor / mm', 'distance ultrasonic / mm', 'distance infrared / %', name='calibration', timestamp=False)
 
 # robot.drive(speed = 100, turn_rate = 0)
 
 # for n in range(300):
-#     data.log(watch.time()/1000, robot.distance()/1000, distance_sensor.distance(), obstacle_sensor.distance())
+#     data.log(watch.time()/1000, robot.distance(), distance_sensor.distance(), obstacle_sensor.distance())
 #     wait(100)
 # robot.stop()
 
