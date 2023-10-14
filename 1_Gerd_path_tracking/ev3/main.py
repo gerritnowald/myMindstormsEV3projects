@@ -23,10 +23,8 @@ watch = StopWatch()
 #------------------------------------------------------------------------------
 # calibration
 
-# data  = DataLog('time / s', 'distance driven motor / mm', 'distance ultrasonic / mm', 'distance infrared / %', name='calibration', timestamp=False)
-
+# data  = DataLog('time / s', 'distance driven motor / mm', 'distance ultrasonic / mm', 'distance infrared / %', name='distance_sensor', timestamp=False)
 # robot.drive(speed = 100, turn_rate = 0)
-
 # for n in range(300):
 #     data.log(watch.time()/1000, robot.distance(), distance_sensor.distance(), obstacle_sensor.distance())
 #     wait(100)
@@ -50,6 +48,14 @@ data.log(watch.time()/1000, robot.distance()/1000, robot.angle(), gyro_sensor.an
 # for n in range(10):
 #     robot.turn(360)
 #     data.log(watch.time()/1000, robot.distance()/1000, robot.angle(), gyro_sensor.angle()/factor)
+
+
+# data = DataLog('time / s', 'angle motors / °', 'distance ultrasonic / mm', 'distance infrared / %', name='surrounding', timestamp=False)
+# robot.drive(speed = 0, turn_rate = 12)     # mm/s, deg/s
+# for n in range(300):
+#     data.log(watch.time()/1000, robot.angle(), distance_sensor.distance(), obstacle_sensor.distance() )
+#     wait(100)
+# robot.stop()
 
 
 angle = 0
