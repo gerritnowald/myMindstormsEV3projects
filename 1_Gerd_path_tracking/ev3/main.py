@@ -23,18 +23,18 @@ watch = StopWatch()
 #------------------------------------------------------------------------------
 # calibration
 
-gyro_sensor.reset_angle(0)
-robot.turn(3*360)  # °
-wait(100)
-factor = gyro_sensor.angle() / (3*360)
+# gyro_sensor.reset_angle(0)
+# robot.turn(3*360)  # °
+# wait(100)
+# factor = gyro_sensor.angle() / (3*360)
 
-robot.reset()
-gyro_sensor.reset_angle(0)
+# robot.reset()
+# gyro_sensor.reset_angle(0)
 
 #------------------------------------------------------------------------------
 # main loop
 
-data.log(watch.time()/1000, robot.distance()/1000, robot.angle(), gyro_sensor.angle()/factor)
+# data.log(watch.time()/1000, robot.distance()/1000, robot.angle(), gyro_sensor.angle()/factor)
 
 
 # for n in range(10):
@@ -47,12 +47,12 @@ angle = 0
 while True:
     robot.drive(speed = 100, turn_rate = 0)     # mm/s, deg/s
 
-    while obstacle_sensor.distance() > 20 and bumper.pressed() is False:
+    while obstacle_sensor.distance() > 30 and distance_sensor.distance() > 200 and bumper.pressed() is False:
         wait(100)    # ms
 
     robot.straight(-50)     # mm
     
-    data.log(watch.time()/1000, robot.distance()/1000, angle, gyro_sensor.angle()/factor)
+    # data.log(watch.time()/1000, robot.distance()/1000, angle, gyro_sensor.angle()/factor)
 
     robot.turn( random.randint(30,180) )  # °
     angle += robot.angle()
