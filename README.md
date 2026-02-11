@@ -1,6 +1,6 @@
 # myMindstormsEV3projects
 
-![](https://raw.githubusercontent.com/gerritnowald/myMindstormsEV3projects/main/render.png)
+![](https://github.com/gerritnowald/myMindstormsEV3projects/blob/main/render.png)
 
 my projects with the Lego Mindstorms EV3, programmed with [PyBricks](https://pybricks.com/ev3-micropython).
 
