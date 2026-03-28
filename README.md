@@ -2,8 +2,6 @@
 
 my projects with the Lego Mindstorms EV3, programmed with [PyBricks](https://pybricks.com/ev3-micropython).
 
-## 1_Gerd_path_tracking
-
 A three-wheeled robot (2 driven, 1 jockey) with an infrared sensor and a bumper.  
 It mimicks the behavior of a randomly driving robot vacuum, while also tracking its path.  
 Related blog posts:  

@@ -6,6 +6,9 @@ from pybricks.robotics import DriveBase
 
 import random
 
+wheel_diameter =  62.4     # mm
+axle_track     = 109.605   # mm
+
 #------------------------------------------------------------------------------
 # initialization
 
@@ -14,7 +17,7 @@ gyro_sensor     = GyroSensor(Port.S2)
 bumper          = TouchSensor(Port.S3)
 obstacle_sensor = InfraredSensor(Port.S4)
 
-robot = DriveBase(left_motor = Motor(Port.B), right_motor = Motor(Port.C), wheel_diameter = 62.4, axle_track = 109.605 )     # mm
+robot = DriveBase(left_motor = Motor(Port.B), right_motor = Motor(Port.C), wheel_diameter = wheel_diameter, axle_track = axle_track )
 robot.settings(straight_speed = 100, straight_acceleration = 100, turn_rate = 100, turn_acceleration = 100)
 
 data  = DataLog('time / s', 'distance / m', 'angle motors / °', 'angle gyro / °', name='path', timestamp=False)
