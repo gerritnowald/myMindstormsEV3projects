@@ -1,5 +1,5 @@
 #!/usr/bin/env pybricks-micropython
-from pybricks.ev3devices import (Motor, TouchSensor, InfraredSensor, GyroSensor, UltrasonicSensor)
+from pybricks.ev3devices import (Motor, TouchSensor, InfraredSensor, GyroSensor)
 from pybricks.parameters import Port
 from pybricks.tools import wait, StopWatch, DataLog
 from pybricks.robotics import DriveBase
@@ -9,55 +9,55 @@ import random
 wheel_diameter =  62.4     # mm
 axle_track     = 109.605   # mm
 
+speed          = 100       # mm/s
+turn_rate      = 60        # deg/s
+angle_resolution = 10       # deg 
+
 #------------------------------------------------------------------------------
 # initialization
 
-distance_sensor = UltrasonicSensor(Port.S1)
+infrared_sensor = InfraredSensor(Port.S4)
 gyro_sensor     = GyroSensor(Port.S2)
 bumper          = TouchSensor(Port.S3)
-obstacle_sensor = InfraredSensor(Port.S4)
 
 robot = DriveBase(left_motor = Motor(Port.B), right_motor = Motor(Port.C), wheel_diameter = wheel_diameter, axle_track = axle_track )
-robot.settings(straight_speed = 100, straight_acceleration = 100, turn_rate = 100, turn_acceleration = 100)
+robot.settings(straight_speed = speed, straight_acceleration = 100, turn_rate = turn_rate, turn_acceleration = 100)
 
-data  = DataLog('time / s', 'distance / m', 'angle motors / °', 'angle gyro / °', name='path', timestamp=False)
+data  = DataLog('time / s', 'distance / mm', 'angle motors / °', 'angle gyro / °', 'distance infrared / %', name='path', timestamp=False)
+
+def log_data():
+    data.log(watch.time()/1000, robot.distance(), robot.angle(), gyro_sensor.angle(), infrared_sensor.distance() )
+
 watch = StopWatch()
 
 #------------------------------------------------------------------------------
 # calibration
 
-# gyro_sensor.reset_angle(0)
-# robot.turn(3*360)  # °
-# wait(100)
-# factor = gyro_sensor.angle() / (3*360)
+Δt = angle_resolution / turn_rate
 
-# robot.reset()
-# gyro_sensor.reset_angle(0)
+robot.reset()
+gyro_sensor.reset_angle(0)
+
+robot.drive(speed = 0, turn_rate = turn_rate)
+for n in range(360/angle_resolution):
+    wait(Δt * 1000)   # ms
+    log_data()
 
 #------------------------------------------------------------------------------
 # main loop
 
-# data.log(watch.time()/1000, robot.distance()/1000, robot.angle(), gyro_sensor.angle()/factor)
-
-
-# for n in range(10):
-#     robot.turn(360)
-#     data.log(watch.time()/1000, robot.distance()/1000, robot.angle(), gyro_sensor.angle()/factor)
-
-
-angle = 0
-
 while True:
-    robot.drive(speed = 100, turn_rate = 0)     # mm/s, deg/s
+    robot.drive(speed = speed, turn_rate = 0)
 
-    while obstacle_sensor.distance() > 30 and distance_sensor.distance() > 200 and bumper.pressed() is False:
+    while infrared_sensor.distance() > 30 and bumper.pressed() is False:
         wait(100)    # ms
 
+    # stop and log data
     robot.straight(-50)     # mm
-    
-    # data.log(watch.time()/1000, robot.distance()/1000, angle, gyro_sensor.angle()/factor)
+    log_data()
 
-    robot.turn( random.randint(30,180) )  # °
-    angle += robot.angle()
-
-    robot.reset()
+    # turn and log data
+    robot.drive(speed = 0, turn_rate = turn_rate)
+    for n in range(random.randint(30,180)/angle_resolution):
+        wait(Δt * 1000)   # ms
+        log_data()

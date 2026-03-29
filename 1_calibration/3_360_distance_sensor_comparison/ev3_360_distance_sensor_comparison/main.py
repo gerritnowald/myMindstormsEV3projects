@@ -23,7 +23,7 @@ watch = StopWatch()
 
 data = DataLog('time / s', 'angle motors / °', 'distance ultrasonic / mm', 'distance infrared / %', name='surrounding', timestamp=False)
 robot.drive(speed = 0, turn_rate = 12)     # mm/s, deg/s
-for n in range(300):    # 100 deg/s for 30 s
+for n in range(300):    # 12 deg/s for 30 s
     data.log(watch.time()/1000, robot.angle(), distance_sensor.distance(), obstacle_sensor.distance() )
     wait(100)   # ms
 robot.stop()
